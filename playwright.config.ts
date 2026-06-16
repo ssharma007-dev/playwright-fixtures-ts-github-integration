@@ -23,10 +23,7 @@ export default defineConfig<EyesFixture>({
       appName: 'Playwright GitHub Integration Demo',
       branchName,
       parentBranchName: parentBranch,
-      batch: {
-        name: `Playwright Visual Tests – ${branchName}`,
-        ...(commitSha ? { id: commitSha } : {}),
-      },
+      batch: { name: 'Playwright Visual Tests', id: commitSha },
       failTestsOnDiff: 'afterAll',
     },
   },

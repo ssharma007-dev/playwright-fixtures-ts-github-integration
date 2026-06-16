@@ -18,3 +18,10 @@ test('after sign in click', async ({ page }) => {
 
   await expect(page).toHaveScreenshot('After Sign In', { fullPage: true });
 });
+
+test('username field – focused state', async ({ page, eyes }) => {
+  await page.goto('https://demo.applitools.com');
+  await page.locator('#username').focus();
+
+  await eyes.check('Username Field Focused', { region: page.locator('#username') });
+});

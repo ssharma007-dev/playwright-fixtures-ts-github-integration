@@ -9,6 +9,7 @@
     "@applitools/eyes-playwright": "^1.47.6",
     "@playwright/test": "^1.56.1",
     "@types/node": "^24.10.1",
+    "dotenv": "^16.0.0",
     "typescript": "^5.4.0"
   }
 }

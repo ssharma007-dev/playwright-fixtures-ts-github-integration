@@ -1,5 +1,11 @@
+import type { FileLogHandlerPlain } from '@applitools/eyes-playwright';
 import type { EyesFixture } from '@applitools/eyes-playwright/fixture';
 import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+// If nothing specified, classic runner will be used
+const eyesRunner = process.env.EYES_RUNNER === 'ufg' ? 'ufg' : 'classic';
 
 const branchName =
   process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF_NAME || 'local';
@@ -12,8 +18,9 @@ export default defineConfig<EyesFixture>({
   use: {
     trace: 'on',
     eyesConfig: {
+      hostOS: 'Linux',
+      type: eyesRunner,
       appName: 'Playwright GitHub Integration Demo',
-      type: 'ufg',
       branchName,
       parentBranchName: parentBranch,
       batch: {

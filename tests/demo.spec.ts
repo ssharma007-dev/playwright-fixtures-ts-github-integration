@@ -9,14 +9,12 @@ test('homepage – full window check', async ({ page }) => {
 test('login form – region check', async ({ page, eyes }) => {
   await page.goto('https://demo.applitools.com');
 
-  const loginForm = page.locator('#log-in-form');
-
-  await eyes.check('Login Form Region', { region: loginForm });
+  await eyes.check('Login Form Region', { region: page.locator('form') });
 });
 
 test('after sign in click', async ({ page }) => {
   await page.goto('https://demo.applitools.com');
-  await page.getByRole('button', { name: /sign in/i }).click();
+  await page.locator('#log-in').click();
 
   await expect(page).toHaveScreenshot('After Sign In', { fullPage: true });
 });

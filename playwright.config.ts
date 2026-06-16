@@ -1,18 +1,27 @@
+import type { EyesFixture } from '@applitools/eyes-playwright/fixture';
 import { defineConfig, devices } from '@playwright/test';
 
-export default defineConfig({
+const branchName =
+  process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF_NAME || 'local';
+const parentBranch = process.env.GITHUB_BASE_REF || 'main';
+const commitSha = process.env.GITHUB_SHA;
+
+export default defineConfig<EyesFixture>({
   testDir: './tests',
-  timeout: 60_000,
-  retries: 0,
-  workers: 1,
-  reporter: [
-    ['list'],
-    ['html', { open: 'never' }],
-  ],
+  reporter: '@applitools/eyes-playwright/reporter',
   use: {
-    headless: true,
-    viewport: { width: 1280, height: 800 },
-    video: 'retain-on-failure',
+    trace: 'on',
+    eyesConfig: {
+      appName: 'Playwright GitHub Integration Demo',
+      type: 'ufg',
+      branchName,
+      parentBranchName: parentBranch,
+      batch: {
+        name: `Playwright Visual Tests – ${branchName}`,
+        ...(commitSha ? { id: commitSha } : {}),
+      },
+      failTestsOnDiff: 'afterAll',
+    },
   },
   projects: [
     {

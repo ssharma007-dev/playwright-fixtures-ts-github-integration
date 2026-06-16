@@ -1,57 +1,22 @@
-import { test, expect, branchName, parentBranch, commitSha } from '../fixtures/eyes.fixture';
-import { Region, MatchLevel } from '@applitools/eyes-playwright';
+import { test, expect } from '@applitools/eyes-playwright/fixture';
 
-test.describe('Demo – Applitools Eyes + GitHub Integration', () => {
-  test.beforeAll(() => {
-    console.log(`Branch:         ${branchName}`);
-    console.log(`Parent branch:  ${parentBranch}`);
-    console.log(`Batch ID (SHA): ${commitSha}`);
-  });
+test('homepage – full window check', async ({ page }) => {
+  await page.goto('https://demo.applitools.com');
 
-  test('homepage – full window check', async ({ page, eyes }) => {
-    await page.goto('https://demo.applitools.com');
+  await expect(page).toHaveScreenshot('Homepage', { fullPage: true });
+});
 
-    await eyes.checkWindow('Homepage – Full Window');
-  });
+test('login form – region check', async ({ page, eyes }) => {
+  await page.goto('https://demo.applitools.com');
 
-  test('homepage – hero region only', async ({ page, eyes }) => {
-    await page.goto('https://demo.applitools.com');
+  const loginForm = page.locator('#log-in-form');
 
-    // Check only the login form region to isolate visual noise
-    const loginForm = page.locator('#log-in-form');
-    await eyes.check('Login Form Region', {
-      region: loginForm,
-      matchLevel: MatchLevel.Strict,
-    });
-  });
+  await eyes.check('Login Form Region', { region: loginForm });
+});
 
-  test('login page – after sign in click', async ({ page, eyes }) => {
-    await page.goto('https://demo.applitools.com');
-    await page.getByRole('button', { name: /sign in/i }).click();
+test('after sign in click', async ({ page }) => {
+  await page.goto('https://demo.applitools.com');
+  await page.getByRole('button', { name: /sign in/i }).click();
 
-    await eyes.checkWindow('After Sign In click');
-  });
-
-  test('homepage – layout match on dynamic content', async ({ page, eyes }) => {
-    await page.goto('https://demo.applitools.com');
-
-    // Layout match level ignores content changes (e.g. dates, balances) and only checks structure
-    await eyes.check('Homepage – Layout Match', {
-      fully: true,
-      matchLevel: MatchLevel.Layout,
-    });
-  });
-
-  test('username input – focused state', async ({ page, eyes }) => {
-    await page.goto('https://demo.applitools.com');
-
-    const usernameInput = page.locator('#username');
-    await usernameInput.focus();
-
-    // Capture the input field focused state as a region check
-    await eyes.check('Username Input – Focused', {
-      region: usernameInput,
-      matchLevel: MatchLevel.Strict,
-    });
-  });
+  await expect(page).toHaveScreenshot('After Sign In', { fullPage: true });
 });

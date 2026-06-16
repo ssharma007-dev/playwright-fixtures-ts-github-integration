@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "test": "npx playwright test",
-    "test:headed": "npx playwright test --headed"
-  },
-  "dependencies": {
-    "@applitools/eyes-playwright": "^1.47.6",
-    "@playwright/test": "^1.44.0"
+    "test:ufg": "EYES_RUNNER=ufg npx playwright test"
   },
   "devDependencies": {
+    "@applitools/eyes-playwright": "^1.47.6",
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.1",
     "typescript": "^5.4.0"
   }
 }

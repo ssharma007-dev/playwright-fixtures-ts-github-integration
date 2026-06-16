@@ -41,4 +41,17 @@ test.describe('Demo – Applitools Eyes + GitHub Integration', () => {
       matchLevel: MatchLevel.Layout,
     });
   });
+
+  test('username input – focused state', async ({ page, eyes }) => {
+    await page.goto('https://demo.applitools.com');
+
+    const usernameInput = page.locator('#username');
+    await usernameInput.focus();
+
+    // Capture the input field focused state as a region check
+    await eyes.check('Username Input – Focused', {
+      region: usernameInput,
+      matchLevel: MatchLevel.Strict,
+    });
+  });
 });
